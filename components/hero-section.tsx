@@ -1,11 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowRight, PlayCircle } from "lucide-react";
+import { ArrowRight, Building2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-const HEADLINE = "Encuentra tu próximo hogar sin complicaciones";
+const HEADLINE = "Tu asesor de confianza en Punta del Este";
 
 export function HeroSection() {
   return (
@@ -37,7 +38,7 @@ export function HeroSection() {
             transition={{ duration: 0.4 }}
             className="mb-6 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white/80"
           >
-            Nuevas propiedades cada semana
+            Especialistas en Punta del Este
           </motion.span>
 
           <h1 className="text-balance text-4xl font-semibold tracking-tight text-white sm:text-6xl">
@@ -60,8 +61,10 @@ export function HeroSection() {
             transition={{ duration: 0.4, delay: 0.7 }}
             className="mt-6 max-w-lg text-balance text-lg text-white/70 sm:text-xl"
           >
-            En Argus compras con precios claros, propiedades verificadas y
-            financiación flexible — todo desde un mismo lugar.
+            Ya sea que busques una inversión inteligente o el refugio de
+            vacaciones ideal, te acompañamos como un amigo experto en cada
+            paso — no somos un portal más, somos tu equipo boutique en la
+            península y sus alrededores.
           </motion.p>
 
           <motion.div
@@ -70,13 +73,24 @@ export function HeroSection() {
             transition={{ duration: 0.4, delay: 0.9 }}
             className="mt-10 flex flex-col items-start gap-3 sm:flex-row"
           >
-            <Button size="lg" className="w-full sm:w-auto">
-              Explorar propiedades
+            <Button
+              size="lg"
+              className="w-full sm:w-auto"
+              nativeButton={false}
+              render={<Link href="#asesoria" />}
+            >
+              Hablemos de tu próximo proyecto
               <ArrowRight />
             </Button>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto">
-              <PlayCircle />
-              Cómo funciona
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto"
+              nativeButton={false}
+              render={<Link href="#listings" />}
+            >
+              <Building2 />
+              Ver propiedades destacadas
             </Button>
           </motion.div>
         </div>
