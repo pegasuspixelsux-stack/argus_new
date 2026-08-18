@@ -3,7 +3,6 @@
 import { useState } from "react";
 
 import type { Lead } from "@/lib/data/leads";
-import type { TradeInLead } from "@/lib/data/trade-ins";
 import type { ContactMessage } from "@/lib/data/contact";
 import { cn } from "@/lib/utils";
 import {
@@ -20,22 +19,19 @@ const dateFormatter = new Intl.DateTimeFormat("es-UY", {
   timeStyle: "short",
 });
 
-type Tab = "vehicles" | "trade-ins" | "contact";
+type Tab = "properties" | "contact";
 
 export function LeadsView({
   leads,
-  tradeInLeads,
   contactMessages,
 }: {
   leads: Lead[];
-  tradeInLeads: TradeInLead[];
   contactMessages: ContactMessage[];
 }) {
-  const [tab, setTab] = useState<Tab>("vehicles");
+  const [tab, setTab] = useState<Tab>("properties");
 
   const tabs: { id: Tab; label: string; count: number }[] = [
-    { id: "vehicles", label: "Consultas de vehículos", count: leads.length },
-    { id: "trade-ins", label: "Permutas", count: tradeInLeads.length },
+    { id: "properties", label: "Consultas de propiedades", count: leads.length },
     { id: "contact", label: "Contacto", count: contactMessages.length },
   ];
 
@@ -59,15 +55,15 @@ export function LeadsView({
         ))}
       </div>
 
-      {tab === "vehicles" ? (
+      {tab === "properties" ? (
         leads.length === 0 ? (
-          <EmptyState message="Todavía no hay consultas sobre vehículos." />
+          <EmptyState message="Todavía no hay consultas sobre propiedades." />
         ) : (
           <div className="rounded-lg border border-border bg-card">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Vehículo</TableHead>
+                  <TableHead>Propiedad</TableHead>
                   <TableHead>Contacto</TableHead>
                   <TableHead>Mensaje</TableHead>
                   <TableHead>Fecha</TableHead>
@@ -76,49 +72,15 @@ export function LeadsView({
               <TableBody>
                 {leads.map((lead) => (
                   <TableRow key={lead.id}>
-                    <TableCell className="font-medium text-foreground">{lead.vehicleTitle}</TableCell>
+                    <TableCell className="font-medium text-foreground">
+                      {lead.propertyTitle}
+                    </TableCell>
                     <TableCell>
                       <p className="text-foreground">{lead.name}</p>
                       <p className="text-xs text-muted-foreground">{lead.email}</p>
                     </TableCell>
                     <TableCell className="max-w-xs truncate text-muted-foreground" title={lead.message}>
                       {lead.message}
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {dateFormatter.format(new Date(lead.createdAt))}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        )
-      ) : null}
-
-      {tab === "trade-ins" ? (
-        tradeInLeads.length === 0 ? (
-          <EmptyState message="Todavía no hay solicitudes de permuta." />
-        ) : (
-          <div className="rounded-lg border border-border bg-card">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Vehículo</TableHead>
-                  <TableHead>Estado</TableHead>
-                  <TableHead>Contacto</TableHead>
-                  <TableHead>Fecha</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {tradeInLeads.map((lead) => (
-                  <TableRow key={lead.id}>
-                    <TableCell className="font-medium text-foreground">
-                      {lead.year} {lead.make} {lead.model}
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">{lead.condition}</TableCell>
-                    <TableCell>
-                      <p className="text-foreground">{lead.name}</p>
-                      <p className="text-xs text-muted-foreground">{lead.email}</p>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
                       {dateFormatter.format(new Date(lead.createdAt))}

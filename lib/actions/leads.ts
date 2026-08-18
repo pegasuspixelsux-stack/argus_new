@@ -3,8 +3,8 @@
 import { createLead } from "@/lib/data/leads";
 
 export interface SubmitLeadInput {
-  vehicleId: string;
-  vehicleTitle: string;
+  propertyId: string;
+  propertyTitle: string;
   name: string;
   email: string;
   message: string;
@@ -30,7 +30,13 @@ export async function submitLeadAction(input: SubmitLeadInput): Promise<SubmitLe
   }
 
   try {
-    await createLead({ vehicleId: input.vehicleId, vehicleTitle: input.vehicleTitle, name, email, message });
+    await createLead({
+      propertyId: input.propertyId,
+      propertyTitle: input.propertyTitle,
+      name,
+      email,
+      message,
+    });
     return { ok: true };
   } catch {
     return { ok: false, error: "No pudimos enviar tu mensaje. Inténtalo de nuevo en un momento." };

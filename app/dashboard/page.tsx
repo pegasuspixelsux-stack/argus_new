@@ -1,17 +1,16 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Car, CheckCircle2, Inbox, Users } from "lucide-react";
+import { Building2, CheckCircle2, Inbox, Users } from "lucide-react";
 
-import { listVehicles } from "@/lib/data/vehicles";
+import { listProperties } from "@/lib/data/properties";
 import { listAppUsers } from "@/lib/data/users";
 import { listLeads, type Lead } from "@/lib/data/leads";
-import { listTradeInLeads, type TradeInLead } from "@/lib/data/trade-ins";
 import { listContactMessages, type ContactMessage } from "@/lib/data/contact";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export const metadata: Metadata = { title: "Panel — Dealio" };
+export const metadata: Metadata = { title: "Panel — Argus" };
 export const dynamic = "force-dynamic";
 
 const dateFormatter = new Intl.DateTimeFormat("es-UY", { dateStyle: "medium" });
@@ -20,7 +19,7 @@ function settled<T>(result: PromiseSettledResult<T[]>): T[] {
   return result.status === "fulfilled" ? result.value : [];
 }
 
-type LeadKind = "vehicle" | "trade-in" | "contact";
+type LeadKind = "property" | "contact";
 
 interface UnifiedLead {
   id: string;
@@ -31,28 +30,16 @@ interface UnifiedLead {
 }
 
 const KIND_LABELS: Record<LeadKind, string> = {
-  vehicle: "Vehículo",
-  "trade-in": "Permuta",
+  property: "Propiedad",
   contact: "Contacto",
 };
 
-function toUnifiedLeads(
-  leads: Lead[],
-  tradeInLeads: TradeInLead[],
-  contactMessages: ContactMessage[]
-): UnifiedLead[] {
+function toUnifiedLeads(leads: Lead[], contactMessages: ContactMessage[]): UnifiedLead[] {
   const unified: UnifiedLead[] = [
     ...leads.map((lead) => ({
       id: lead.id,
-      kind: "vehicle" as const,
-      title: lead.vehicleTitle,
-      name: lead.name,
-      createdAt: lead.createdAt,
-    })),
-    ...tradeInLeads.map((lead) => ({
-      id: lead.id,
-      kind: "trade-in" as const,
-      title: `${lead.year} ${lead.make} ${lead.model}`,
+      kind: "property" as const,
+      title: lead.propertyTitle,
       name: lead.name,
       createdAt: lead.createdAt,
     })),
@@ -68,41 +55,38 @@ function toUnifiedLeads(
 }
 
 export default async function DashboardHomePage() {
-  const [vehiclesResult, usersResult, leadsResult, tradeInsResult, contactResult] =
-    await Promise.allSettled([
-      listVehicles(),
-      listAppUsers(),
-      listLeads(),
-      listTradeInLeads(),
-      listContactMessages(),
-    ]);
+  const [propertiesResult, usersResult, leadsResult, contactResult] = await Promise.allSettled([
+    listProperties(),
+    listAppUsers(),
+    listLeads(),
+    listContactMessages(),
+  ]);
 
-  const vehicles = settled(vehiclesResult);
+  const properties = settled(propertiesResult);
   const users = settled(usersResult);
   const leads = settled(leadsResult);
-  const tradeInLeads = settled(tradeInsResult);
   const contactMessages = settled(contactResult);
 
-  const publishedCount = vehicles.filter((v) => v.status === "published").length;
+  const publishedCount = properties.filter((p) => p.status === "published").length;
   const activeUsersCount = users.filter((u) => !u.disabled).length;
-  const totalLeadsCount = leads.length + tradeInLeads.length + contactMessages.length;
+  const totalLeadsCount = leads.length + contactMessages.length;
 
   const kpis = [
-    { label: "Vehículos en stock", value: vehicles.length, icon: Car },
-    { label: "Publicados", value: publishedCount, icon: CheckCircle2 },
+    { label: "Propiedades en catálogo", value: properties.length, icon: Building2 },
+    { label: "Publicadas", value: publishedCount, icon: CheckCircle2 },
     { label: "Leads totales", value: totalLeadsCount, icon: Inbox },
     { label: "Usuarios activos", value: activeUsersCount, icon: Users },
   ];
 
-  const recentVehicles = vehicles.slice(0, 5);
-  const recentLeads = toUnifiedLeads(leads, tradeInLeads, contactMessages).slice(0, 5);
+  const recentProperties = properties.slice(0, 5);
+  const recentLeads = toUnifiedLeads(leads, contactMessages).slice(0, 5);
 
   return (
     <div className="flex flex-col gap-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">Resumen</h1>
         <p className="text-sm text-muted-foreground">
-          Un vistazo general a tu stock y tus leads.
+          Un vistazo general a tu catálogo y tus leads.
         </p>
       </div>
 
@@ -128,47 +112,47 @@ export default async function DashboardHomePage() {
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle>Últimos vehículos</CardTitle>
-              <Link href="/dashboard/vehicles" className="text-sm text-primary hover:underline">
-                Ver todos
+              <CardTitle>Últimas propiedades</CardTitle>
+              <Link href="/dashboard/properties" className="text-sm text-primary hover:underline">
+                Ver todas
               </Link>
             </div>
           </CardHeader>
           <CardContent className="flex flex-col divide-y divide-border">
-            {recentVehicles.length === 0 ? (
+            {recentProperties.length === 0 ? (
               <p className="py-6 text-center text-sm text-muted-foreground">
-                Todavía no hay vehículos
+                Todavía no hay propiedades
               </p>
             ) : (
-              recentVehicles.map((vehicle) => (
+              recentProperties.map((property) => (
                 <Link
-                  key={vehicle.id}
-                  href={`/dashboard/vehicles/${vehicle.id}/edit`}
+                  key={property.id}
+                  href={`/dashboard/properties/${property.id}/edit`}
                   className="-mx-2 flex items-center justify-between gap-3 rounded-md px-2 py-3 transition-colors hover:bg-muted/50"
                 >
                   <div className="flex min-w-0 items-center gap-3">
                     <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md bg-muted">
-                      {vehicle.photos[0] ? (
+                      {property.photos[0] ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          src={vehicle.photos[0].url}
+                          src={property.photos[0].url}
                           alt=""
                           className="size-full object-cover"
                         />
                       ) : (
-                        <Car className="size-4 text-muted-foreground" />
+                        <Building2 className="size-4 text-muted-foreground" />
                       )}
                     </div>
                     <div className="min-w-0">
                       <p className="truncate text-sm font-medium text-foreground">
-                        {vehicle.year} {vehicle.make} {vehicle.model}
+                        {property.title}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {dateFormatter.format(new Date(vehicle.updatedAt))}
+                        {dateFormatter.format(new Date(property.updatedAt))}
                       </p>
                     </div>
                   </div>
-                  <StatusBadge status={vehicle.status} />
+                  <StatusBadge status={property.status} />
                 </Link>
               ))
             )}

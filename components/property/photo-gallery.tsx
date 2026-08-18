@@ -1,18 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Car } from "lucide-react";
+import { Building2 } from "lucide-react";
 
-import type { VehiclePhoto } from "@/types/vehicle";
+import type { PropertyPhoto } from "@/types/property";
 import { cn } from "@/lib/utils";
 
-export function PhotoGallery({ photos, title }: { photos: VehiclePhoto[]; title: string }) {
+export function PhotoGallery({ photos, title }: { photos: PropertyPhoto[]; title: string }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   if (photos.length === 0) {
     return (
       <div className="flex aspect-video w-full items-center justify-center rounded-xl border border-border bg-muted text-muted-foreground">
-        <Car className="size-10" />
+        <Building2 className="size-10" />
       </div>
     );
   }

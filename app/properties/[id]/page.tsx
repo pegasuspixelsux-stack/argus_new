@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import { Fuel, Gauge, Palette, Settings2, TriangleAlert } from "lucide-react";
+import { Bath, BedDouble, Home, Ruler, TriangleAlert } from "lucide-react";
 
-import { tryGetPublishedVehicle } from "@/lib/data/vehicles";
-import { PhotoGallery } from "@/components/vehicle/photo-gallery";
-import { PriceDisplay } from "@/components/vehicle/price-display";
-import { LeadForm } from "@/components/vehicle/lead-form";
-import { WhatsAppButton } from "@/components/vehicle/whatsapp-button";
+import { tryGetPublishedProperty } from "@/lib/data/properties";
+import { PROPERTY_TYPE_LABELS } from "@/lib/property-labels";
+import { PhotoGallery } from "@/components/property/photo-gallery";
+import { PriceDisplay } from "@/components/property/price-display";
+import { LeadForm } from "@/components/property/lead-form";
+import { WhatsAppButton } from "@/components/property/whatsapp-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -20,37 +21,21 @@ async function getAbsoluteUrl(pathname: string) {
 }
 
 export async function generateMetadata(
-  { params }: PageProps<"/vehicles/[id]">
+  { params }: PageProps<"/properties/[id]">
 ): Promise<Metadata> {
   const { id } = await params;
-  const { vehicle } = await tryGetPublishedVehicle(id);
-  if (!vehicle) return { title: "Vehículo no encontrado — Dealio" };
+  const { property } = await tryGetPublishedProperty(id);
+  if (!property) return { title: "Propiedad no encontrada — Argus" };
 
-  const title = `${vehicle.year} ${vehicle.make} ${vehicle.model}`;
   return {
-    title: `${title} — Dealio`,
-    description: vehicle.description || `Ver los detalles de ${title}.`,
+    title: `${property.title} — Argus`,
+    description: property.description || `Ver los detalles de ${property.title}.`,
   };
 }
 
-const TRANSMISSION_LABELS: Record<string, string> = {
-  automatic: "Automática",
-  manual: "Manual",
-  cvt: "CVT",
-  "dual-clutch": "Doble embrague",
-};
-
-const FUEL_LABELS: Record<string, string> = {
-  gasoline: "Nafta",
-  diesel: "Diésel",
-  hybrid: "Híbrido",
-  electric: "Eléctrico",
-  "plug-in-hybrid": "Híbrido enchufable",
-};
-
-export default async function PublicVehiclePage({ params }: PageProps<"/vehicles/[id]">) {
+export default async function PublicPropertyPage({ params }: PageProps<"/properties/[id]">) {
   const { id } = await params;
-  const { vehicle, error } = await tryGetPublishedVehicle(id);
+  const { property, error } = await tryGetPublishedProperty(id);
 
   if (error) {
     return (
@@ -59,53 +44,58 @@ export default async function PublicVehiclePage({ params }: PageProps<"/vehicles
           <TriangleAlert />
           <AlertTitle>Esta página no está disponible en este momento</AlertTitle>
           <AlertDescription>
-            No pudimos cargar este vehículo. Inténtalo de nuevo en unos minutos.
+            No pudimos cargar esta propiedad. Inténtalo de nuevo en unos minutos.
           </AlertDescription>
         </Alert>
       </div>
     );
   }
-  if (!vehicle) notFound();
+  if (!property) notFound();
 
-  const title = `${vehicle.year} ${vehicle.make} ${vehicle.model}`;
-  const vehicleUrl = await getAbsoluteUrl(`/vehicles/${vehicle.id}`);
+  const propertyUrl = await getAbsoluteUrl(`/properties/${property.id}`);
   const whatsappNumber = process.env.NEXT_PUBLIC_SALES_WHATSAPP_NUMBER;
 
   const specs = [
+    { icon: Home, label: "Tipo", value: PROPERTY_TYPE_LABELS[property.propertyType] },
     {
-      icon: Gauge,
-      label: "Kilometraje",
-      value: vehicle.specs.mileage != null ? `${vehicle.specs.mileage.toLocaleString("es-UY")} km` : null,
+      icon: BedDouble,
+      label: "Dormitorios",
+      value: property.details.bedrooms != null ? String(property.details.bedrooms) : null,
     },
     {
-      icon: Settings2,
-      label: "Transmisión",
-      value: vehicle.specs.transmission ? TRANSMISSION_LABELS[vehicle.specs.transmission] : null,
+      icon: Bath,
+      label: "Baños",
+      value: property.details.bathrooms != null ? String(property.details.bathrooms) : null,
     },
     {
-      icon: Fuel,
-      label: "Combustible",
-      value: vehicle.specs.fuelType ? FUEL_LABELS[vehicle.specs.fuelType] : null,
-    },
-    {
-      icon: Palette,
-      label: "Color exterior",
-      value: vehicle.specs.exteriorColor || null,
+      icon: Ruler,
+      label: "Superficie",
+      value:
+        property.details.areaM2 != null
+          ? `${property.details.areaM2.toLocaleString("es-UY")} m²`
+          : null,
     },
   ].filter((spec) => spec.value);
+
+  const hasAdditionalDetails =
+    property.details.lotAreaM2 != null ||
+    property.details.yearBuilt != null ||
+    property.details.parkingSpaces != null;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
         <div className="flex flex-col gap-8 lg:col-span-2">
-          <PhotoGallery photos={vehicle.photos} title={title} />
+          <PhotoGallery photos={property.photos} title={property.title} />
 
           <div>
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-              {title}
+              {property.title}
             </h1>
-            {vehicle.specs.bodyType ? (
-              <p className="mt-1 text-muted-foreground">{vehicle.specs.bodyType}</p>
+            {property.neighborhood || property.city ? (
+              <p className="mt-1 text-muted-foreground">
+                {[property.neighborhood, property.city].filter(Boolean).join(", ")}
+              </p>
             ) : null}
           </div>
 
@@ -124,31 +114,39 @@ export default async function PublicVehiclePage({ params }: PageProps<"/vehicles
             </div>
           ) : null}
 
-          {vehicle.description ? (
+          {property.description ? (
             <div>
               <h2 className="mb-2 text-lg font-semibold text-foreground">Descripción</h2>
               <p className="whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
-                {vehicle.description}
+                {property.description}
               </p>
             </div>
           ) : null}
 
-          {(vehicle.specs.interiorColor || vehicle.specs.vin) && (
+          {hasAdditionalDetails && (
             <div>
               <h2 className="mb-2 text-lg font-semibold text-foreground">
                 Detalles adicionales
               </h2>
               <dl className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
-                {vehicle.specs.interiorColor ? (
+                {property.details.lotAreaM2 != null ? (
                   <div className="flex justify-between border-b border-border/60 py-1.5">
-                    <dt className="text-muted-foreground">Color interior</dt>
-                    <dd className="font-medium text-foreground">{vehicle.specs.interiorColor}</dd>
+                    <dt className="text-muted-foreground">Superficie del terreno</dt>
+                    <dd className="font-medium text-foreground">
+                      {property.details.lotAreaM2.toLocaleString("es-UY")} m²
+                    </dd>
                   </div>
                 ) : null}
-                {vehicle.specs.vin ? (
+                {property.details.yearBuilt != null ? (
                   <div className="flex justify-between border-b border-border/60 py-1.5">
-                    <dt className="text-muted-foreground">VIN</dt>
-                    <dd className="font-medium text-foreground">{vehicle.specs.vin}</dd>
+                    <dt className="text-muted-foreground">Año de construcción</dt>
+                    <dd className="font-medium text-foreground">{property.details.yearBuilt}</dd>
+                  </div>
+                ) : null}
+                {property.details.parkingSpaces != null ? (
+                  <div className="flex justify-between border-b border-border/60 py-1.5">
+                    <dt className="text-muted-foreground">Cocheras</dt>
+                    <dd className="font-medium text-foreground">{property.details.parkingSpaces}</dd>
                   </div>
                 ) : null}
               </dl>
@@ -160,22 +158,22 @@ export default async function PublicVehiclePage({ params }: PageProps<"/vehicles
           <Card>
             <CardHeader>
               <PriceDisplay
-                priceDisplay={vehicle.priceDisplay}
-                priceCompareAt={vehicle.priceCompareAt}
+                priceDisplay={property.priceDisplay}
+                priceCompareAt={property.priceCompareAt}
               />
             </CardHeader>
             <CardContent className="flex flex-col gap-5">
               <WhatsAppButton
                 phoneNumber={whatsappNumber}
-                vehicleTitle={title}
-                vehicleUrl={vehicleUrl}
+                propertyTitle={property.title}
+                propertyUrl={propertyUrl}
               />
 
               <Separator />
 
               <div>
-                <CardTitle className="mb-3 text-base">Consultá por este vehículo</CardTitle>
-                <LeadForm vehicleId={vehicle.id} vehicleTitle={title} />
+                <CardTitle className="mb-3 text-base">Consultá por esta propiedad</CardTitle>
+                <LeadForm propertyId={property.id} propertyTitle={property.title} />
               </div>
             </CardContent>
           </Card>

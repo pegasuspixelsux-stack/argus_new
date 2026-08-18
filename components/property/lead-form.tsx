@@ -11,15 +11,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export function LeadForm({
-  vehicleId,
-  vehicleTitle,
+  propertyId,
+  propertyTitle,
 }: {
-  vehicleId: string;
-  vehicleTitle: string;
+  propertyId: string;
+  propertyTitle: string;
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState(`Estoy interesado/a en ${vehicleTitle}. ¿Sigue disponible?`);
+  const [message, setMessage] = useState(`Estoy interesado/a en ${propertyTitle}. ¿Sigue disponible?`);
   const [status, setStatus] = useState<"idle" | "loading" | "sent">("idle");
   const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +28,7 @@ export function LeadForm({
     setError(null);
     setStatus("loading");
 
-    const result = await submitLeadAction({ vehicleId, vehicleTitle, name, email, message });
+    const result = await submitLeadAction({ propertyId, propertyTitle, name, email, message });
     if (result.ok) {
       setStatus("sent");
     } else {

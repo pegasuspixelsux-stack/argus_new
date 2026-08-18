@@ -7,8 +7,8 @@ import { getAdminDb } from "@/lib/firebase/admin";
 const COLLECTION = "leads";
 
 export interface CreateLeadInput {
-  vehicleId: string;
-  vehicleTitle: string;
+  propertyId: string;
+  propertyTitle: string;
   name: string;
   email: string;
   message: string;
@@ -34,8 +34,8 @@ export async function listLeads(): Promise<Lead[]> {
     const data = doc.data();
     return {
       id: doc.id,
-      vehicleId: data.vehicleId ?? "",
-      vehicleTitle: data.vehicleTitle ?? "",
+      propertyId: data.propertyId ?? "",
+      propertyTitle: data.propertyTitle ?? "",
       name: data.name ?? "",
       email: data.email ?? "",
       message: data.message ?? "",

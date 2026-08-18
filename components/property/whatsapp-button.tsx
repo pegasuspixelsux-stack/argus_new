@@ -2,18 +2,18 @@ import { MessageCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-function buildWhatsAppMessage(vehicleTitle: string, vehicleUrl: string) {
-  return `¡Hola! Estoy interesado/a en ${vehicleTitle}. ¿Me cuentas más? ${vehicleUrl}`;
+function buildWhatsAppMessage(propertyTitle: string, propertyUrl: string) {
+  return `¡Hola! Estoy interesado/a en ${propertyTitle}. ¿Me cuentas más? ${propertyUrl}`;
 }
 
 export function WhatsAppButton({
   phoneNumber,
-  vehicleTitle,
-  vehicleUrl,
+  propertyTitle,
+  propertyUrl,
 }: {
   phoneNumber: string | undefined;
-  vehicleTitle: string;
-  vehicleUrl: string;
+  propertyTitle: string;
+  propertyUrl: string;
 }) {
   if (!phoneNumber) {
     return (
@@ -29,7 +29,7 @@ export function WhatsAppButton({
     );
   }
 
-  const message = buildWhatsAppMessage(vehicleTitle, vehicleUrl);
+  const message = buildWhatsAppMessage(propertyTitle, propertyUrl);
   const href = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
   return (
