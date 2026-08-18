@@ -1,0 +1,43 @@
+rules_version = '2';
+
+// All reads/writes from this app happen server-side through firebase-admin,
+// which always bypasses these rules. They exist as a safety net in case a
+// client ever talks to Firestore directly, and so `firebase deploy` has
+// real rules instead of the 30-day test-mode default.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /vehicles/{vehicleId} {
+      // Published listings are readable by anyone; everything else requires
+      // a signed-in (dashboard) user.
+      allow get: if resource.data.status == 'published' || request.auth != null;
+      allow list: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+
+    match /leads/{leadId} {
+      // Anyone can submit a lead from the public vehicle page; only signed-in
+      // users can read or manage the resulting list.
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    match /tradeInLeads/{leadId} {
+      // Anyone can submit a trade-in estimate request from the homepage;
+      // only signed-in users can read or manage the resulting list.
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    match /contactMessages/{messageId} {
+      // Anyone can send a message from the homepage contact form; only
+      // signed-in users can read or manage the resulting list.
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    match /settings/{docId} {
+      // Dashboard-only reference data; no public access at all.
+      allow read, write: if request.auth != null;
+    }
+  }
+}

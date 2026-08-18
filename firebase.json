@@ -1,0 +1,10 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "bucket": "argus-new-e1c32.firebasestorage.app",
+    "rules": "storage.rules"
+  }
+}
