@@ -97,8 +97,9 @@ export function PhotoUploader({ photos, onChange, storageFolder }: PhotoUploader
           prev.map((item) => (item.id === uploadId ? { ...item, progress } : item))
         );
       },
-      () => {
-        toast.error(`No se pudo subir ${file.name}. Inténtalo de nuevo.`);
+      (error) => {
+        console.error(`Upload failed for ${file.name}:`, error.code, error.message, error);
+        toast.error(`No se pudo subir ${file.name}: ${error.code || error.message}`);
         setUploading((prev) => prev.filter((item) => item.id !== uploadId));
         URL.revokeObjectURL(previewUrl);
       },
