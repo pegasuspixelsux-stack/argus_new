@@ -7,7 +7,6 @@ import { DealerHighlightSection } from "@/components/dealer-highlight-section";
 import { AboutSection } from "@/components/about-section";
 import { FinancingPartnersTicker } from "@/components/financing-partners-ticker";
 import { FinancingSection } from "@/components/financing-section";
-import { TradeInSection } from "@/components/trade-in-section";
 import { ContactSection } from "@/components/contact-section";
 import { SiteFooter } from "@/components/site-footer";
 
@@ -24,7 +23,6 @@ export default function Home() {
         <AboutSection />
         <FinancingPartnersTicker />
         <FinancingSection />
-        <TradeInSection />
         <ContactSection />
       </main>
       <SiteFooter />

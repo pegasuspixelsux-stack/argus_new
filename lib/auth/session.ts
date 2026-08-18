@@ -35,7 +35,7 @@ export async function getSession(): Promise<Session | null> {
  * Defense-in-depth auth check for pages and Server Functions.
  * Proxy already gates `/dashboard/*`, but per Next.js guidance a matcher
  * change can silently remove that coverage, so every server-side entry
- * point that touches vehicle data re-checks the session itself.
+ * point that touches property data re-checks the session itself.
  */
 export async function requireSession(): Promise<Session> {
   const session = await getSession();

@@ -6,7 +6,7 @@ rules_version = '2';
 // real rules instead of the 30-day test-mode default.
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /vehicles/{vehicleId} {
+    match /properties/{propertyId} {
       // Published listings are readable by anyone; everything else requires
       // a signed-in (dashboard) user.
       allow get: if resource.data.status == 'published' || request.auth != null;
@@ -15,15 +15,8 @@ service cloud.firestore {
     }
 
     match /leads/{leadId} {
-      // Anyone can submit a lead from the public vehicle page; only signed-in
+      // Anyone can submit a lead from the public property page; only signed-in
       // users can read or manage the resulting list.
-      allow create: if true;
-      allow read, update, delete: if request.auth != null;
-    }
-
-    match /tradeInLeads/{leadId} {
-      // Anyone can submit a trade-in estimate request from the homepage;
-      // only signed-in users can read or manage the resulting list.
       allow create: if true;
       allow read, update, delete: if request.auth != null;
     }
