@@ -1,4 +1,4 @@
-import { Car, Inbox, LayoutDashboard, Users } from "lucide-react";
+import { Building2, Inbox, LayoutDashboard, Users } from "lucide-react";
 
 export const MAIN_NAV_ITEMS = [
   {
@@ -8,10 +8,10 @@ export const MAIN_NAV_ITEMS = [
     match: (path: string) => path === "/dashboard",
   },
   {
-    label: "Vehículos",
-    href: "/dashboard/vehicles",
-    icon: Car,
-    match: (path: string) => path.startsWith("/dashboard/vehicles"),
+    label: "Propiedades",
+    href: "/dashboard/properties",
+    icon: Building2,
+    match: (path: string) => path.startsWith("/dashboard/properties"),
   },
   {
     label: "Leads",

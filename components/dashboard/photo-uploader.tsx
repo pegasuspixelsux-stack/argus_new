@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { getFirebaseStorage } from "@/lib/firebase/client";
 import { isFirebaseClientConfigured } from "@/lib/firebase/config";
 import { resizeImageFile } from "@/lib/image";
-import type { VehiclePhoto } from "@/types/vehicle";
+import type { PropertyPhoto } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
@@ -28,9 +28,9 @@ interface UploadingItem {
 }
 
 interface PhotoUploaderProps {
-  photos: VehiclePhoto[];
-  onChange: (photos: VehiclePhoto[]) => void;
-  /** Storage folder these photos live under, e.g. `vehicles/<id>`. */
+  photos: PropertyPhoto[];
+  onChange: (photos: PropertyPhoto[]) => void;
+  /** Storage folder these photos live under, e.g. `properties/<id>`. */
   storageFolder: string;
 }
 
@@ -106,7 +106,7 @@ export function PhotoUploader({ photos, onChange, storageFolder }: PhotoUploader
     );
   }
 
-  async function handleRemove(photo: VehiclePhoto) {
+  async function handleRemove(photo: PropertyPhoto) {
     onChange(photos.filter((item) => item.path !== photo.path));
     try {
       await deleteObject(ref(getFirebaseStorage(), photo.path));
@@ -115,7 +115,7 @@ export function PhotoUploader({ photos, onChange, storageFolder }: PhotoUploader
     }
   }
 
-  function handleMakeCover(photo: VehiclePhoto) {
+  function handleMakeCover(photo: PropertyPhoto) {
     onChange([photo, ...photos.filter((item) => item.path !== photo.path)]);
   }
 
@@ -193,8 +193,8 @@ export function PhotoUploader({ photos, onChange, storageFolder }: PhotoUploader
       </div>
 
       <p className="text-xs text-muted-foreground">
-        La primera foto se usa como portada en todos lados donde se muestra el
-        vehículo. Pasa el mouse sobre una foto para usarla como portada o
+        La primera foto se usa como portada en todos lados donde se muestra la
+        propiedad. Pasa el mouse sobre una foto para usarla como portada o
         quitarla. Las fotos se redimensionan en tu navegador y tienen un
         límite de 5MB cada una.
       </p>

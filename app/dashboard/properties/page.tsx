@@ -2,22 +2,22 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Plus, TriangleAlert } from "lucide-react";
 
-import { listVehicles } from "@/lib/data/vehicles";
-import { VehicleTable } from "@/components/dashboard/vehicle-table";
+import { listProperties } from "@/lib/data/properties";
+import { PropertyTable } from "@/components/dashboard/property-table";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-export const metadata: Metadata = { title: "Vehículos — Dealio" };
+export const metadata: Metadata = { title: "Propiedades — Argus" };
 export const dynamic = "force-dynamic";
 
-export default async function VehiclesPage() {
-  let vehicles: Awaited<ReturnType<typeof listVehicles>> = [];
+export default async function PropertiesPage() {
+  let properties: Awaited<ReturnType<typeof listProperties>> = [];
   let loadError: string | null = null;
 
   try {
-    vehicles = await listVehicles();
+    properties = await listProperties();
   } catch {
-    loadError = "No pudimos cargar tu stock de vehículos. Recarga la página.";
+    loadError = "No pudimos cargar tu catálogo de propiedades. Recarga la página.";
   }
 
   return (
@@ -25,16 +25,16 @@ export default async function VehiclesPage() {
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-            Stock de vehículos
+            Catálogo de propiedades
           </h1>
           <p className="text-sm text-muted-foreground">
-            {vehicles.length} vehículo{vehicles.length === 1 ? "" : "s"} en tu
-            stock
+            {properties.length} propiedad{properties.length === 1 ? "" : "es"} en tu
+            catálogo
           </p>
         </div>
-        <Button nativeButton={false} render={<Link href="/dashboard/vehicles/new" />}>
+        <Button nativeButton={false} render={<Link href="/dashboard/properties/new" />}>
           <Plus />
-          Agregar vehículo
+          Agregar propiedad
         </Button>
       </div>
 
@@ -45,7 +45,7 @@ export default async function VehiclesPage() {
           <AlertDescription>{loadError}</AlertDescription>
         </Alert>
       ) : (
-        <VehicleTable vehicles={vehicles} />
+        <PropertyTable properties={properties} />
       )}
     </div>
   );

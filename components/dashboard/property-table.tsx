@@ -6,8 +6,9 @@ import { useRouter } from "next/navigation";
 import { MoreHorizontal, Pencil, ExternalLink, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-import { deleteVehicleAction } from "@/lib/actions/vehicles";
-import type { Vehicle } from "@/types/vehicle";
+import { deletePropertyAction } from "@/lib/actions/properties";
+import { PROPERTY_TYPE_LABELS } from "@/lib/property-labels";
+import type { Property } from "@/types/property";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,7 +42,7 @@ const currency = new Intl.NumberFormat("es-UY", {
   maximumFractionDigits: 0,
 });
 
-export function VehicleTable({ vehicles }: { vehicles: Vehicle[] }) {
+export function PropertyTable({ properties }: { properties: Property[] }) {
   const router = useRouter();
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [isDeleting, startDeleteTransition] = useTransition();
@@ -49,23 +50,23 @@ export function VehicleTable({ vehicles }: { vehicles: Vehicle[] }) {
   function handleDelete(id: string) {
     startDeleteTransition(async () => {
       try {
-        await deleteVehicleAction(id);
-        toast.success("Vehículo eliminado.");
+        await deletePropertyAction(id);
+        toast.success("Propiedad eliminada.");
         router.refresh();
       } catch {
-        toast.error("No pudimos eliminar el vehículo. Inténtalo de nuevo.");
+        toast.error("No pudimos eliminar la propiedad. Inténtalo de nuevo.");
       } finally {
         setPendingDeleteId(null);
       }
     });
   }
 
-  if (vehicles.length === 0) {
+  if (properties.length === 0) {
     return (
       <div className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-border py-16 text-center">
-        <p className="font-medium text-foreground">Todavía no hay vehículos</p>
+        <p className="font-medium text-foreground">Todavía no hay propiedades</p>
         <p className="text-sm text-muted-foreground">
-          Agrega tu primer vehículo para empezar a armar tu stock.
+          Agrega tu primera propiedad para empezar a armar tu catálogo.
         </p>
       </div>
     );
@@ -77,7 +78,7 @@ export function VehicleTable({ vehicles }: { vehicles: Vehicle[] }) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Vehículo</TableHead>
+              <TableHead>Propiedad</TableHead>
               <TableHead>Estado</TableHead>
               <TableHead>Precio</TableHead>
               <TableHead>Actualizado</TableHead>
@@ -85,15 +86,15 @@ export function VehicleTable({ vehicles }: { vehicles: Vehicle[] }) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {vehicles.map((vehicle) => (
-              <TableRow key={vehicle.id}>
+            {properties.map((property) => (
+              <TableRow key={property.id}>
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-md bg-muted">
-                      {vehicle.photos[0] ? (
+                      {property.photos[0] ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          src={vehicle.photos[0].url}
+                          src={property.photos[0].url}
                           alt=""
                           className="size-full object-cover"
                         />
@@ -103,27 +104,26 @@ export function VehicleTable({ vehicles }: { vehicles: Vehicle[] }) {
                     </div>
                     <div>
                       <Link
-                        href={`/dashboard/vehicles/${vehicle.id}/edit`}
+                        href={`/dashboard/properties/${property.id}/edit`}
                         className="font-medium text-foreground hover:underline"
                       >
-                        {vehicle.year} {vehicle.make} {vehicle.model}
+                        {property.title}
                       </Link>
                       <p className="text-xs text-muted-foreground">
-                        {vehicle.specs.mileage != null
-                          ? `${vehicle.specs.mileage.toLocaleString("es-UY")} km`
-                          : "Sin kilometraje"}
+                        {PROPERTY_TYPE_LABELS[property.propertyType]}
+                        {property.neighborhood ? ` · ${property.neighborhood}` : ""}
                       </p>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <StatusBadge status={vehicle.status} />
+                  <StatusBadge status={property.status} />
                 </TableCell>
                 <TableCell className="text-sm text-foreground">
-                  {vehicle.priceDisplay != null ? currency.format(vehicle.priceDisplay) : "—"}
+                  {property.priceDisplay != null ? currency.format(property.priceDisplay) : "—"}
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">
-                  {new Date(vehicle.updatedAt).toLocaleDateString("es-UY")}
+                  {new Date(property.updatedAt).toLocaleDateString("es-UY")}
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>
@@ -135,14 +135,14 @@ export function VehicleTable({ vehicles }: { vehicles: Vehicle[] }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem
-                        render={<Link href={`/dashboard/vehicles/${vehicle.id}/edit`} />}
+                        render={<Link href={`/dashboard/properties/${property.id}/edit`} />}
                       >
                         <Pencil />
                         Editar
                       </DropdownMenuItem>
-                      {vehicle.status === "published" ? (
+                      {property.status === "published" ? (
                         <DropdownMenuItem
-                          render={<Link href={`/vehicles/${vehicle.id}`} target="_blank" />}
+                          render={<Link href={`/properties/${property.id}`} target="_blank" />}
                         >
                           <ExternalLink />
                           Ver página pública
@@ -150,7 +150,7 @@ export function VehicleTable({ vehicles }: { vehicles: Vehicle[] }) {
                       ) : null}
                       <DropdownMenuItem
                         variant="destructive"
-                        onClick={() => setPendingDeleteId(vehicle.id)}
+                        onClick={() => setPendingDeleteId(property.id)}
                       >
                         <Trash2 />
                         Eliminar
@@ -170,10 +170,10 @@ export function VehicleTable({ vehicles }: { vehicles: Vehicle[] }) {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>¿Eliminar este vehículo?</AlertDialogTitle>
+            <AlertDialogTitle>¿Eliminar esta propiedad?</AlertDialogTitle>
             <AlertDialogDescription>
               Esto elimina de forma permanente la publicación y sus fotos de
-              tu stock. Esta acción no se puede deshacer.
+              tu catálogo. Esta acción no se puede deshacer.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
