@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/scroll-reveal";
 
 const POINTS = [
-  "Inspección mecánica de múltiples puntos en cada vehículo",
-  "Documentación y kilometraje verificados antes de publicarlo",
-  "Limpieza y detailing completo antes de la entrega",
+  "Verificación de escritura y documentación antes de publicar",
+  "Relevamiento del estado general de la propiedad",
+  "Sesión de fotos profesional antes de la publicación",
 ];
 
 export function DealerHighlightSection() {
@@ -19,12 +19,13 @@ export function DealerHighlightSection() {
             Nuestro proceso
           </p>
           <h2 className="mt-3 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Cada auto pasa por una revisión a fondo antes de salir a la venta
+            Cada propiedad pasa por una revisión a fondo antes de publicarse
           </h2>
           <p className="mt-4 text-balance text-muted-foreground">
-            No subimos un auto a la vitrina sin revisarlo de arriba a abajo.
-            Mecánica, papeles y estética quedan en orden antes de que lo veas,
-            así compras con la tranquilidad de saber qué te estás llevando.
+            No publicamos una propiedad sin revisarla de arriba a abajo.
+            Documentación, estado edilicio y fotos profesionales quedan en
+            orden antes de que la veas, así compras con la tranquilidad de
+            saber qué estás adquiriendo.
           </p>
           <ul className="mt-6 flex flex-col gap-3">
             {POINTS.map((point) => (
@@ -34,16 +35,16 @@ export function DealerHighlightSection() {
               </li>
             ))}
           </ul>
-          <Button className="mt-8" nativeButton={false} render={<Link href="#inventory" />}>
-            Ver stock disponible
+          <Button className="mt-8" nativeButton={false} render={<Link href="#listings" />}>
+            Ver propiedades disponibles
           </Button>
         </ScrollReveal>
 
         <ScrollReveal delay={0.15} className="overflow-hidden rounded-2xl border border-border shadow-sm">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1200&auto=format&fit=crop"
-            alt="Vehículo revisado y listo para la venta"
+            src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1200&auto=format&fit=crop"
+            alt="Propiedad revisada y lista para la venta"
             className="aspect-square w-full object-cover"
           />
         </ScrollReveal>

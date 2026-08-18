@@ -5,7 +5,7 @@ import { ArrowRight, PlayCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-const HEADLINE = "Encuentra tu próximo vehículo sin complicaciones";
+const HEADLINE = "Encuentra tu próximo hogar sin complicaciones";
 
 export function HeroSection() {
   return (
@@ -17,7 +17,7 @@ export function HeroSection() {
       <div aria-hidden="true" className="absolute inset-0 -z-20">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/modern car dealership.png"
+          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2000&auto=format&fit=crop"
           alt=""
           className="size-full object-cover object-center"
         />
@@ -37,7 +37,7 @@ export function HeroSection() {
             transition={{ duration: 0.4 }}
             className="mb-6 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white/80"
           >
-            Stock actualizado todas las semanas
+            Nuevas propiedades cada semana
           </motion.span>
 
           <h1 className="text-balance text-4xl font-semibold tracking-tight text-white sm:text-6xl">
@@ -60,7 +60,7 @@ export function HeroSection() {
             transition={{ duration: 0.4, delay: 0.7 }}
             className="mt-6 max-w-lg text-balance text-lg text-white/70 sm:text-xl"
           >
-            En Dealio compras con precios claros, vehículos revisados y
+            En Argus compras con precios claros, propiedades verificadas y
             financiación flexible — todo desde un mismo lugar.
           </motion.p>
 
@@ -71,7 +71,7 @@ export function HeroSection() {
             className="mt-10 flex flex-col items-start gap-3 sm:flex-row"
           >
             <Button size="lg" className="w-full sm:w-auto">
-              Ver stock disponible
+              Explorar propiedades
               <ArrowRight />
             </Button>
             <Button size="lg" variant="outline" className="w-full sm:w-auto">

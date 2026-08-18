@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { BadgeCheck, HandCoins, Wrench } from "lucide-react";
+import { BadgeCheck, HandCoins, Handshake } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ScrollReveal } from "@/components/scroll-reveal";
@@ -13,21 +13,21 @@ type Feature = {
 const FEATURES: Feature[] = [
   {
     icon: BadgeCheck,
-    title: "Todos los vehículos revisados",
+    title: "Todas las propiedades verificadas",
     description:
-      "Cada auto de nuestro stock pasa una inspección de múltiples puntos antes de publicarse, así lo que ves es lo que hay.",
+      "Cada propiedad de nuestro catálogo pasa una verificación de documentación y estado antes de publicarse, así lo que ves es lo que hay.",
   },
   {
     icon: HandCoins,
     title: "Precios claros, sin sorpresas",
     description:
-      "Sin costos ocultos ni sorpresas de último momento — el precio que ves es el que pagas, más financiación flexible.",
+      "Sin costos ocultos ni sorpresas de último momento — el precio que ves es el que negocias, más financiación hipotecaria flexible.",
   },
   {
-    icon: Wrench,
-    title: "Te acompañamos después de la venta",
+    icon: Handshake,
+    title: "Te acompañamos hasta el cierre",
     description:
-      "Desde el papeleo hasta tu próximo trade-in, nuestro equipo sigue ahí mucho después de que te llevas el auto.",
+      "Desde la documentación hasta la escritura, nuestro equipo sigue ahí mucho después de mostrarte la propiedad.",
   },
 ];
 
@@ -37,11 +37,11 @@ export function FeaturesSection() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <ScrollReveal className="mx-auto max-w-2xl text-center">
           <h2 className="text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Por qué comprarnos a nosotros
+            Por qué elegirnos
           </h2>
           <p className="mt-4 text-balance text-muted-foreground">
-            Precios claros, vehículos revisados y un equipo que trata cada
-            venta como si importara — porque importa.
+            Precios claros, propiedades verificadas y un equipo que trata
+            cada operación como si importara — porque importa.
           </p>
         </ScrollReveal>
 

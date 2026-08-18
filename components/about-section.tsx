@@ -1,7 +1,7 @@
 import { ScrollReveal } from "@/components/scroll-reveal";
 
 const STATS = [
-  { value: "10 mil+", label: "Vehículos entregados" },
+  { value: "500+", label: "Propiedades vendidas" },
   { value: "4.8★", label: "Valoración promedio" },
   { value: "48 h", label: "Tiempo de respuesta" },
 ];
@@ -15,7 +15,7 @@ export function AboutSection() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1200&auto=format&fit=crop"
-              alt="Un integrante del equipo de Dealio"
+              alt="Un integrante del equipo de Argus"
               className="aspect-square w-full object-cover"
             />
           </div>
@@ -26,12 +26,12 @@ export function AboutSection() {
             Sobre nosotros
           </p>
           <h2 className="mt-3 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Gente que entiende de autos, no solo de ventas
+            Gente que entiende de propiedades, no solo de ventas
           </h2>
           <p className="mt-4 text-balance text-muted-foreground">
-            Somos un equipo chico que revisa cada vehículo antes de
-            ofrecerlo, negocia con precios claros y sigue disponible mucho
-            después de que te llevas el auto. Comprar un usado no tiene por
+            Somos un equipo chico que revisa cada propiedad antes de
+            publicarla, negocia con precios claros y sigue disponible mucho
+            después de firmar. Comprar o vender una propiedad no tiene por
             qué ser complicado.
           </p>
 
