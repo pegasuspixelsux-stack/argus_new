@@ -12,6 +12,8 @@ export async function createPropertyAction(input: PropertyInput): Promise<{ id: 
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/properties");
   revalidatePath(`/properties/${id}`);
+  revalidatePath("/");
+  revalidatePath("/listings");
   return { id };
 }
 
@@ -22,6 +24,8 @@ export async function updatePropertyAction(id: string, input: PropertyInput): Pr
   revalidatePath("/dashboard/properties");
   revalidatePath(`/dashboard/properties/${id}/edit`);
   revalidatePath(`/properties/${id}`);
+  revalidatePath("/");
+  revalidatePath("/listings");
 }
 
 export async function deletePropertyAction(id: string): Promise<void> {
@@ -29,4 +33,6 @@ export async function deletePropertyAction(id: string): Promise<void> {
   await deleteProperty(id);
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/properties");
+  revalidatePath("/");
+  revalidatePath("/listings");
 }
