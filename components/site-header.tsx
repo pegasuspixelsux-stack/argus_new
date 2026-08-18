@@ -17,7 +17,6 @@ import {
 const NAV_LINKS = [
   { label: "Propiedades", href: "/listings" },
   { label: "Ventajas", href: "#features" },
-  { label: "Financiación", href: "#financing" },
   { label: "Nosotros", href: "#about" },
   { label: "Contacto", href: "#contact" },
 ];

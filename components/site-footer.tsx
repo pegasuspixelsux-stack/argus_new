@@ -9,7 +9,6 @@ const FOOTER_LINKS: { title: string; links: { label: string; href: string }[] }[
     title: "Producto",
     links: [
       { label: "Ventajas", href: "#features" },
-      { label: "Financiación", href: "#financing" },
       { label: "Novedades", href: "#" },
     ],
   },

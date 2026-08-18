@@ -5,8 +5,7 @@ import { FeaturedPropertiesSection } from "@/components/featured-properties";
 import { FeaturesSection } from "@/components/features-section";
 import { DealerHighlightSection } from "@/components/dealer-highlight-section";
 import { AboutSection } from "@/components/about-section";
-import { FinancingPartnersTicker } from "@/components/financing-partners-ticker";
-import { FinancingSection } from "@/components/financing-section";
+import { StatsSection } from "@/components/stats-section";
 import { AdvisoryCtaSection } from "@/components/advisory-cta-section";
 import { ContactSection } from "@/components/contact-section";
 import { SiteFooter } from "@/components/site-footer";
@@ -22,8 +21,7 @@ export default function Home() {
         <FeaturesSection />
         <DealerHighlightSection />
         <AboutSection />
-        <FinancingPartnersTicker />
-        <FinancingSection />
+        <StatsSection />
         <AdvisoryCtaSection />
         <ContactSection />
       </main>
