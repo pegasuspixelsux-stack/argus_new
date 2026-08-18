@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
-
-import { listPublishedVehicles } from "@/lib/data/vehicles";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
-import { InventoryView } from "@/components/inventory/inventory-view";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { TriangleAlert } from "lucide-react";
 
+import { listPublishedProperties } from "@/lib/data/properties";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import { ListingsView } from "@/components/listings/listings-view";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
 export const metadata: Metadata = {
-  title: "Stock disponible — Dealio",
-  description: "Explora todo el stock disponible en Dealio y filtra por año, marca, modelo y precio.",
+  title: "Propiedades disponibles — Argus",
+  description:
+    "Explora todas las propiedades disponibles en Argus y filtra por tipo, dormitorios, zona y precio.",
 };
 
-export default async function InventoryPage() {
-  let vehicles: Awaited<ReturnType<typeof listPublishedVehicles>> = [];
+export default async function ListingsPage() {
+  let properties: Awaited<ReturnType<typeof listPublishedProperties>> = [];
   let loadError = false;
   try {
-    vehicles = await listPublishedVehicles(12);
+    properties = await listPublishedProperties(12);
   } catch {
     loadError = true;
   }
@@ -28,10 +29,10 @@ export default async function InventoryPage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <h1 className="text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-              Stock disponible
+              Propiedades disponibles
             </h1>
             <p className="mt-2 text-muted-foreground">
-              Filtra por año, marca, modelo y precio para encontrar tu próximo vehículo.
+              Filtra por tipo, dormitorios, zona y precio para encontrar tu próxima propiedad.
             </p>
           </div>
 
@@ -40,11 +41,11 @@ export default async function InventoryPage() {
               <TriangleAlert />
               <AlertTitle>Algo salió mal</AlertTitle>
               <AlertDescription>
-                No pudimos cargar el stock de vehículos. Recarga la página.
+                No pudimos cargar las propiedades disponibles. Recarga la página.
               </AlertDescription>
             </Alert>
           ) : (
-            <InventoryView vehicles={vehicles} />
+            <ListingsView properties={properties} />
           )}
         </div>
       </main>

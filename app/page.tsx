@@ -1,7 +1,7 @@
 import { SiteHeader } from "@/components/site-header";
 import { HeroSection } from "@/components/hero-section";
-import { VehicleSearchBar } from "@/components/vehicle-search-bar";
-import { FeaturedVehiclesSection } from "@/components/featured-vehicles";
+import { PropertySearchBar } from "@/components/property-search-bar";
+import { FeaturedPropertiesSection } from "@/components/featured-properties";
 import { FeaturesSection } from "@/components/features-section";
 import { DealerHighlightSection } from "@/components/dealer-highlight-section";
 import { AboutSection } from "@/components/about-section";
@@ -17,8 +17,8 @@ export default function Home() {
       <SiteHeader />
       <main className="flex-1">
         <HeroSection />
-        <VehicleSearchBar />
-        <FeaturedVehiclesSection />
+        <PropertySearchBar />
+        <FeaturedPropertiesSection />
         <FeaturesSection />
         <DealerHighlightSection />
         <AboutSection />

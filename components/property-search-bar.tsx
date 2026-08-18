@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
 
+import { BEDROOM_OPTIONS, PRICE_RANGES, PROPERTY_TYPES } from "@/lib/property-labels";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { Button } from "@/components/ui/button";
@@ -16,53 +17,31 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const CURRENT_YEAR = new Date().getFullYear();
-const YEARS = Array.from({ length: 16 }, (_, i) => String(CURRENT_YEAR + 1 - i));
+const PROPERTY_TYPE_ITEMS: Record<string, string> = Object.fromEntries(
+  PROPERTY_TYPES.map((option) => [option.value, option.label])
+);
+const BEDROOM_ITEMS: Record<string, string> = Object.fromEntries(
+  BEDROOM_OPTIONS.map((option) => [option.value, option.label])
+);
 
-const MAKES = [
-  "Toyota",
-  "Honda",
-  "Ford",
-  "Chevrolet",
-  "Hyundai",
-  "Nissan",
-  "BMW",
-  "Mercedes-Benz",
-  "Volkswagen",
-  "Jeep",
-  "Kia",
-  "Mazda",
-];
-
-const YEAR_ITEMS: Record<string, string> = Object.fromEntries(YEARS.map((y) => [y, y]));
-const MAKE_ITEMS: Record<string, string> = Object.fromEntries(MAKES.map((m) => [m, m]));
-
-const PRICE_RANGES = [
-  { value: "0-10000", label: "Menos de $10.000" },
-  { value: "10000-20000", label: "$10.000 – $20.000" },
-  { value: "20000-30000", label: "$20.000 – $30.000" },
-  { value: "30000-50000", label: "$30.000 – $50.000" },
-  { value: "50000-", label: "Más de $50.000" },
-];
-
-export function VehicleSearchBar() {
-  const [year, setYear] = useState("");
-  const [make, setMake] = useState("");
-  const [model, setModel] = useState("");
+export function PropertySearchBar() {
+  const [propertyType, setPropertyType] = useState("");
+  const [bedrooms, setBedrooms] = useState("");
+  const [neighborhood, setNeighborhood] = useState("");
   const [price, setPrice] = useState("");
 
   function handleSearch() {
     const params = new URLSearchParams();
-    if (year) params.set("year", year);
-    if (make) params.set("make", make);
-    if (model.trim()) params.set("model", model.trim());
+    if (propertyType) params.set("propertyType", propertyType);
+    if (bedrooms) params.set("bedrooms", bedrooms);
+    if (neighborhood.trim()) params.set("neighborhood", neighborhood.trim());
     if (price) params.set("price", price);
 
-    const inventory = document.getElementById("inventory");
-    if (inventory) {
-      const url = params.toString() ? `#inventory?${params.toString()}` : "#inventory";
+    const listings = document.getElementById("listings");
+    if (listings) {
+      const url = params.toString() ? `#listings?${params.toString()}` : "#listings";
       window.history.replaceState(null, "", url);
-      inventory.scrollIntoView({ behavior: "smooth", block: "start" });
+      listings.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
 
@@ -79,19 +58,19 @@ export function VehicleSearchBar() {
               className="grid grid-cols-2 items-end gap-4 lg:grid-cols-[1fr_1fr_1fr_1fr_auto]"
             >
               <div className="flex flex-col gap-1.5">
-                <Label htmlFor="search-year">Año</Label>
+                <Label htmlFor="search-property-type">Tipo de propiedad</Label>
                 <Select
-                  items={YEAR_ITEMS}
-                  value={year}
-                  onValueChange={(value) => value && setYear(value)}
+                  items={PROPERTY_TYPE_ITEMS}
+                  value={propertyType}
+                  onValueChange={(value) => value && setPropertyType(value)}
                 >
-                  <SelectTrigger id="search-year" className="w-full">
-                    <SelectValue placeholder="Cualquier año" />
+                  <SelectTrigger id="search-property-type" className="w-full">
+                    <SelectValue placeholder="Cualquier tipo" />
                   </SelectTrigger>
                   <SelectContent>
-                    {YEARS.map((y) => (
-                      <SelectItem key={y} value={y}>
-                        {y}
+                    {PROPERTY_TYPES.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -99,19 +78,19 @@ export function VehicleSearchBar() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <Label htmlFor="search-make">Marca</Label>
+                <Label htmlFor="search-bedrooms">Dormitorios</Label>
                 <Select
-                  items={MAKE_ITEMS}
-                  value={make}
-                  onValueChange={(value) => value && setMake(value)}
+                  items={BEDROOM_ITEMS}
+                  value={bedrooms}
+                  onValueChange={(value) => value && setBedrooms(value)}
                 >
-                  <SelectTrigger id="search-make" className="w-full">
-                    <SelectValue placeholder="Cualquier marca" />
+                  <SelectTrigger id="search-bedrooms" className="w-full">
+                    <SelectValue placeholder="Cualquier cantidad" />
                   </SelectTrigger>
                   <SelectContent>
-                    {MAKES.map((m) => (
-                      <SelectItem key={m} value={m}>
-                        {m}
+                    {BEDROOM_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -119,12 +98,12 @@ export function VehicleSearchBar() {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <Label htmlFor="search-model">Modelo</Label>
+                <Label htmlFor="search-neighborhood">Barrio o zona</Label>
                 <Input
-                  id="search-model"
-                  value={model}
-                  onChange={(event) => setModel(event.target.value)}
-                  placeholder="Cualquier modelo"
+                  id="search-neighborhood"
+                  value={neighborhood}
+                  onChange={(event) => setNeighborhood(event.target.value)}
+                  placeholder="Cualquier zona"
                 />
               </div>
 

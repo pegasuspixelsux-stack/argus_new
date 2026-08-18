@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sheet";
 
 const NAV_LINKS = [
-  { label: "Inventario", href: "/inventory" },
+  { label: "Propiedades", href: "/listings" },
   { label: "Ventajas", href: "#features" },
   { label: "Financiación", href: "#financing" },
   { label: "Nosotros", href: "#about" },
