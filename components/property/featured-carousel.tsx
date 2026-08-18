@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight, Building2, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Bath, BedDouble, Building2, Car, ChevronLeft, ChevronRight } from "lucide-react";
 
 import type { Property } from "@/types/property";
 import { PROPERTY_TYPE_LABELS } from "@/lib/property-labels";
@@ -16,20 +16,11 @@ const currency = new Intl.NumberFormat("es-UY", {
   maximumFractionDigits: 0,
 });
 
-/** "Apartamento en Playa Mansa, 3 dormitorios, 2 baños" style summary line. */
-function summaryLine(property: Property): string {
-  const parts: string[] = [
-    property.neighborhood
-      ? `${PROPERTY_TYPE_LABELS[property.propertyType]} en ${property.neighborhood}`
-      : PROPERTY_TYPE_LABELS[property.propertyType],
-  ];
-  if (property.details.bedrooms != null) {
-    parts.push(`${property.details.bedrooms} dormitorio${property.details.bedrooms === 1 ? "" : "s"}`);
-  }
-  if (property.details.bathrooms != null) {
-    parts.push(`${property.details.bathrooms} baño${property.details.bathrooms === 1 ? "" : "s"}`);
-  }
-  return parts.join(", ");
+/** "Apartamento en Playa Mansa" style type + location line. */
+function locationLine(property: Property): string {
+  return property.neighborhood
+    ? `${PROPERTY_TYPE_LABELS[property.propertyType]} en ${property.neighborhood}`
+    : PROPERTY_TYPE_LABELS[property.propertyType];
 }
 
 /**
@@ -74,18 +65,62 @@ export function FeaturedCarousel({ properties }: { properties: Property[] }) {
 
         <div
           aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-gradient-to-r from-black/70 via-black/50 to-black/10"
+          className="absolute inset-0 -z-10 bg-gradient-to-t from-black/75 via-black/30 to-black/40"
         />
 
-        <div className="absolute inset-0 flex items-center">
+        {/* Section heading, overlaid at the top of the slide */}
+        <div className="absolute inset-x-0 top-0 pt-8 sm:pt-12">
+          <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+            <h2 className="text-balance text-2xl font-semibold tracking-tight text-white sm:text-4xl">
+              Propiedades Destacadas
+            </h2>
+            <p className="mt-2 max-w-md text-balance text-sm text-white/70 sm:text-base">
+              Una selección de propiedades elegidas por nuestro equipo.
+            </p>
+          </div>
+        </div>
+
+        {/* Current property's info, anchored toward the bottom of the slide */}
+        <div className="absolute inset-x-0 bottom-0 pb-8 sm:pb-12">
           <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="flex max-w-lg flex-col items-start text-left">
               <p className="text-xs font-medium uppercase tracking-wide text-white/70">
-                {summaryLine(property)}
+                {locationLine(property)}
               </p>
               <h3 className="mt-3 text-balance text-2xl font-semibold tracking-tight text-white sm:text-4xl">
                 {property.title}
               </h3>
+              {property.description ? (
+                <p className="mt-2 line-clamp-2 max-w-md text-sm text-white/80">
+                  {property.description}
+                </p>
+              ) : null}
+
+              {property.details.bedrooms != null ||
+              property.details.bathrooms != null ||
+              property.details.parkingSpaces != null ? (
+                <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-white/90">
+                  {property.details.bedrooms != null ? (
+                    <span className="flex items-center gap-1.5">
+                      <BedDouble className="size-4" />
+                      {property.details.bedrooms}
+                    </span>
+                  ) : null}
+                  {property.details.bathrooms != null ? (
+                    <span className="flex items-center gap-1.5">
+                      <Bath className="size-4" />
+                      {property.details.bathrooms}
+                    </span>
+                  ) : null}
+                  {property.details.parkingSpaces != null ? (
+                    <span className="flex items-center gap-1.5">
+                      <Car className="size-4" />
+                      {property.details.parkingSpaces}
+                    </span>
+                  ) : null}
+                </div>
+              ) : null}
+
               <p className="mt-3 text-lg font-semibold text-white sm:text-xl">
                 {property.priceDisplay != null
                   ? currency.format(property.priceDisplay)

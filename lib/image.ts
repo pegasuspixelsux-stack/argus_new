@@ -1,3 +1,12 @@
+// Some browsers/OSes (notably Windows, for .jfif) report an empty or
+// generic MIME type for otherwise-valid images -- fall back to the file
+// extension rather than treating them as non-images.
+const IMAGE_EXTENSION_PATTERN = /\.(jpe?g|jfif|pjpeg|png|webp|gif|avif|heic|heif|bmp)$/i;
+
+export function isImageFile(file: File): boolean {
+  return file.type.startsWith("image/") || IMAGE_EXTENSION_PATTERN.test(file.name);
+}
+
 /**
  * Downscales an image file in the browser before upload: shrinks anything
  * larger than `maxDimension` on its longest side and re-encodes as JPEG.
@@ -8,7 +17,7 @@ export async function resizeImageFile(
   file: File,
   { maxDimension = 1920, quality = 0.82 }: { maxDimension?: number; quality?: number } = {}
 ): Promise<File> {
-  if (!file.type.startsWith("image/") || file.type === "image/svg+xml") {
+  if (!isImageFile(file) || file.type === "image/svg+xml") {
     return file;
   }
 

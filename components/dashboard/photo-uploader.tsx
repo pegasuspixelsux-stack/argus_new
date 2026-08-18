@@ -12,7 +12,7 @@ import { toast } from "sonner";
 
 import { getFirebaseStorage } from "@/lib/firebase/client";
 import { isFirebaseClientConfigured } from "@/lib/firebase/config";
-import { resizeImageFile } from "@/lib/image";
+import { isImageFile, resizeImageFile } from "@/lib/image";
 import type { PropertyPhoto } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -57,7 +57,7 @@ export function PhotoUploader({ photos, onChange, storageFolder }: PhotoUploader
   }
 
   async function processFile(file: File) {
-    if (!file.type.startsWith("image/")) {
+    if (!isImageFile(file)) {
       toast.error(`${file.name} no es una imagen y fue omitido.`);
       return;
     }
@@ -124,7 +124,7 @@ export function PhotoUploader({ photos, onChange, storageFolder }: PhotoUploader
       <input
         ref={inputRef}
         type="file"
-        accept="image/*"
+        accept="image/*,.jfif"
         multiple
         className="hidden"
         onChange={(event) => {
