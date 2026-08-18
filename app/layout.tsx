@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dealio — Compra, venta y financiación de vehículos",
+  title: "Argus — Compra, venta y financiación de propiedades",
   description:
-    "Encuentra tu próximo vehículo en Dealio: stock actualizado, financiación y tasación de tu usado en Uruguay.",
+    "Encuentra tu próxima propiedad en Argus: catálogo actualizado, financiación hipotecaria y atención personalizada en Uruguay.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

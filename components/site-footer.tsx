@@ -34,7 +34,7 @@ const FOOTER_LINKS: { title: string; links: { label: string; href: string }[] }[
 const SOCIAL_LINKS = [
   { label: "Sitio web", href: "#", icon: Globe },
   { label: "Comunidad", href: "#", icon: MessageCircle },
-  { label: "Correo", href: "mailto:hello@dealio.app", icon: Mail },
+  { label: "Correo", href: "mailto:hello@argus.app", icon: Mail },
 ];
 
 export function SiteFooter() {
@@ -45,7 +45,7 @@ export function SiteFooter() {
           <div className="flex flex-col gap-4">
             <Logo textClassName="text-white" />
             <p className="max-w-xs text-sm text-white/60">
-              Compra, venta y financiación de vehículos, todo en un mismo
+              Compra, venta y financiación de propiedades, todo en un mismo
               lugar.
             </p>
             <div className="flex items-center gap-3">
@@ -86,7 +86,7 @@ export function SiteFooter() {
         <Separator className="my-10 bg-white/15" />
 
         <div className="flex flex-col items-center justify-between gap-4 text-sm text-white/60 sm:flex-row">
-          <p>&copy; {new Date().getFullYear()} Dealio. Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} Argus. Todos los derechos reservados.</p>
           <div className="flex items-center gap-6">
             <a href="#" className="transition-colors hover:text-white">
               Términos

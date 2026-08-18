@@ -32,7 +32,7 @@ export function Logo({
           />
         </svg>
       </span>
-      <span className={cn("text-base text-foreground", textClassName)}>Dealio</span>
+      <span className={cn("text-base text-foreground", textClassName)}>Argus</span>
     </span>
   );
 }

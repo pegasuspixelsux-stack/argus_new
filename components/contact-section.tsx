@@ -4,7 +4,7 @@ import { ContactForm } from "@/components/contact-form";
 import { ScrollReveal } from "@/components/scroll-reveal";
 
 const CONTACT_ITEMS = [
-  { icon: Mail, label: "Correo", value: "hello@dealio.app", href: "mailto:hello@dealio.app" },
+  { icon: Mail, label: "Correo", value: "hello@argus.app", href: "mailto:hello@argus.app" },
   { icon: Phone, label: "Teléfono", value: "+598 2900 1234", href: "tel:+59829001234" },
   { icon: MapPin, label: "Dirección", value: "Av. 18 de Julio 1200, Montevideo" },
   { icon: Clock, label: "Horario", value: "Lun. a sáb., 9 a 19 h" },
