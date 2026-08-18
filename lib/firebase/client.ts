@@ -35,6 +35,19 @@ export function getFirebaseDb(): Firestore {
 }
 
 export function getFirebaseStorage(): FirebaseStorage {
-  if (!storage) storage = getStorage(ensureApp());
+  if (!storage) {
+    // Storage attaches the signed-in user's token via Firebase's internal
+    // "auth-internal" component, but that component is EXPLICIT-instantiation --
+    // it's only created once something in this page's JS actually calls
+    // getAuth() for this app. Storage never triggers that itself. So on any
+    // page that uses getFirebaseStorage() without ever calling
+    // getFirebaseAuth() (e.g. photo-uploader.tsx, which only imports the
+    // former), every upload silently goes out unauthenticated -- Storage
+    // sees request.auth == null and the rules reject it with
+    // storage/unauthorized, even though the user is genuinely signed in.
+    // Touch auth first so it's always initialized before Storage is used.
+    getFirebaseAuth();
+    storage = getStorage(ensureApp());
+  }
   return storage;
 }
