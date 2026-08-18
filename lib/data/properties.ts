@@ -32,6 +32,7 @@ function toProperty(id: string, data: any): Property {
       parkingSpaces: data.details?.parkingSpaces ?? null,
     },
     photos: Array.isArray(data.photos) ? data.photos : [],
+    featured: Boolean(data.featured),
     priceDisplay: data.priceDisplay ?? null,
     priceCompareAt: data.priceCompareAt ?? null,
     status: data.status === "published" ? "published" : "draft",
@@ -64,6 +65,14 @@ export async function getPublishedProperty(id: string): Promise<Property | null>
 export async function listPublishedProperties(max = 4): Promise<Property[]> {
   const properties = await listProperties();
   return properties.filter((property) => property.status === "published").slice(0, max);
+}
+
+/** Published properties explicitly marked as featured, for the homepage's "Destacadas" section. */
+export async function listFeaturedProperties(max = 5): Promise<Property[]> {
+  const properties = await listProperties();
+  return properties
+    .filter((property) => property.status === "published" && property.featured)
+    .slice(0, max);
 }
 
 /**

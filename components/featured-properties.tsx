@@ -1,11 +1,11 @@
-import { listPublishedProperties } from "@/lib/data/properties";
+import { listFeaturedProperties } from "@/lib/data/properties";
 import { PropertyCard } from "@/components/property-card";
 import { ScrollReveal } from "@/components/scroll-reveal";
 
 export async function FeaturedPropertiesSection() {
-  let properties: Awaited<ReturnType<typeof listPublishedProperties>> = [];
+  let properties: Awaited<ReturnType<typeof listFeaturedProperties>> = [];
   try {
-    properties = await listPublishedProperties(4);
+    properties = await listFeaturedProperties(5);
   } catch {
     // Keep the marketing page usable even if Firestore is unreachable.
     return null;
@@ -21,14 +21,13 @@ export async function FeaturedPropertiesSection() {
             Propiedades Destacadas
           </h2>
           <p className="mt-4 text-balance text-muted-foreground">
-            Un vistazo a lo que tenemos disponible, actualizado a medida que
-            entran nuevas propiedades.
+            Una selección de propiedades elegidas por nuestro equipo.
           </p>
         </ScrollReveal>
 
         <ScrollReveal
           delay={0.1}
-          className="mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto -mx-4 px-4 pb-4 sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4"
+          className="mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto -mx-4 px-4 pb-4 sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-5"
         >
           {properties.map((property) => (
             <div key={property.id} className="w-3/4 shrink-0 snap-start sm:w-auto">

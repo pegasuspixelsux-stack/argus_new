@@ -28,6 +28,8 @@ export interface Property {
   description: string;
   details: PropertyDetails;
   photos: PropertyPhoto[];
+  /** Marks this property for the homepage's "Propiedades Destacadas" section. */
+  featured: boolean;
   /** Large, primary display price shown to buyers. */
   priceDisplay: number | null;
   /** Regular / "compare at" price, shown struck through next to the display price. */

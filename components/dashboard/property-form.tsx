@@ -40,6 +40,11 @@ const STATUSES: { value: FormState["status"]; label: string }[] = [
   { value: "published", label: "Publicado" },
 ];
 
+const FEATURED_OPTIONS: { value: FormState["featured"]; label: string }[] = [
+  { value: "false", label: "No" },
+  { value: "true", label: "Sí" },
+];
+
 type NumericField =
   | "bedrooms"
   | "bathrooms"
@@ -75,6 +80,7 @@ interface FormState {
   priceDisplay: string;
   priceCompareAt: string;
   status: "draft" | "published";
+  featured: "true" | "false";
   photos: PropertyPhoto[];
 }
 
@@ -96,6 +102,7 @@ function toFormState(property?: Property): FormState {
       priceDisplay: "",
       priceCompareAt: "",
       status: "draft",
+      featured: "false",
       photos: [],
     };
   }
@@ -116,6 +123,7 @@ function toFormState(property?: Property): FormState {
     priceDisplay: property.priceDisplay != null ? String(property.priceDisplay) : "",
     priceCompareAt: property.priceCompareAt != null ? String(property.priceCompareAt) : "",
     status: property.status,
+    featured: property.featured ? "true" : "false",
     photos: property.photos,
   };
 }
@@ -140,6 +148,7 @@ function buildInput(form: FormState): PropertyInput {
     priceDisplay: form.priceDisplay.trim() ? Number(form.priceDisplay) : null,
     priceCompareAt: form.priceCompareAt.trim() ? Number(form.priceCompareAt) : null,
     status: form.status,
+    featured: form.featured === "true",
   };
 }
 
@@ -306,6 +315,29 @@ export function PropertyForm({ mode, property }: PropertyFormProps) {
                 ))}
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="featured">Destacada en portada</Label>
+            <Select
+              items={FEATURED_OPTIONS}
+              value={form.featured}
+              onValueChange={(value) => update("featured", value as FormState["featured"])}
+            >
+              <SelectTrigger id="featured" className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {FEATURED_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              La portada muestra como máximo 5 propiedades destacadas.
+            </p>
           </div>
 
           <div className="flex flex-col gap-2">
