@@ -6,8 +6,14 @@ import { Loader2, TriangleAlert } from "lucide-react";
 import { toast } from "sonner";
 
 import { createPropertyAction, updatePropertyAction } from "@/lib/actions/properties";
-import { PROPERTY_TYPES } from "@/lib/property-labels";
-import type { Property, PropertyInput, PropertyPhoto, PropertyType } from "@/types/property";
+import { LISTING_TYPES, PROPERTY_TYPES } from "@/lib/property-labels";
+import type {
+  ListingType,
+  Property,
+  PropertyInput,
+  PropertyPhoto,
+  PropertyType,
+} from "@/types/property";
 import { PhotoUploader } from "@/components/dashboard/photo-uploader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,6 +62,7 @@ const NUMERIC_FIELDS: NumericField[] = [
 interface FormState {
   title: string;
   propertyType: PropertyType | "";
+  listingType: ListingType;
   neighborhood: string;
   city: string;
   description: string;
@@ -76,6 +83,7 @@ function toFormState(property?: Property): FormState {
     return {
       title: "",
       propertyType: "",
+      listingType: "sale",
       neighborhood: "",
       city: "",
       description: "",
@@ -94,6 +102,7 @@ function toFormState(property?: Property): FormState {
   return {
     title: property.title,
     propertyType: property.propertyType,
+    listingType: property.listingType,
     neighborhood: property.neighborhood,
     city: property.city,
     description: property.description,
@@ -115,6 +124,7 @@ function buildInput(form: FormState): PropertyInput {
   return {
     title: form.title.trim(),
     propertyType: (form.propertyType || "house") as PropertyType,
+    listingType: form.listingType,
     neighborhood: form.neighborhood.trim(),
     city: form.city.trim(),
     description: form.description.trim(),
@@ -256,6 +266,26 @@ export function PropertyForm({ mode, property }: PropertyFormProps) {
             {errors.propertyType ? (
               <p className="text-xs text-destructive">{errors.propertyType}</p>
             ) : null}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="listingType">Tipo de operación</Label>
+            <Select
+              items={LISTING_TYPES}
+              value={form.listingType}
+              onValueChange={(value) => update("listingType", value as ListingType)}
+            >
+              <SelectTrigger id="listingType" className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {LISTING_TYPES.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="flex flex-col gap-2">
@@ -404,6 +434,9 @@ export function PropertyForm({ mode, property }: PropertyFormProps) {
           <CardDescription>
             El precio principal se muestra grande como precio destacado; el
             precio regular aparece tachado al lado.
+            {form.listingType === "rent"
+              ? " Para alquileres, ingresa el precio mensual — se muestra con \"/mes\"."
+              : null}
           </CardDescription>
         </CardHeader>
         <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">

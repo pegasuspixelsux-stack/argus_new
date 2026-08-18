@@ -1,4 +1,4 @@
-import type { PropertyType } from "@/types/property";
+import type { ListingType, PropertyType } from "@/types/property";
 
 export const PROPERTY_TYPE_LABELS: Record<PropertyType, string> = {
   condo: "Apartamento",
@@ -12,6 +12,16 @@ export const PROPERTY_TYPES: { value: PropertyType; label: string }[] = [
   { value: "house", label: PROPERTY_TYPE_LABELS.house },
   { value: "single-family", label: PROPERTY_TYPE_LABELS["single-family"] },
   { value: "land", label: PROPERTY_TYPE_LABELS.land },
+];
+
+export const LISTING_TYPE_LABELS: Record<ListingType, string> = {
+  sale: "Venta",
+  rent: "Alquiler",
+};
+
+export const LISTING_TYPES: { value: ListingType; label: string }[] = [
+  { value: "sale", label: LISTING_TYPE_LABELS.sale },
+  { value: "rent", label: LISTING_TYPE_LABELS.rent },
 ];
 
 export const BEDROOM_OPTIONS = [

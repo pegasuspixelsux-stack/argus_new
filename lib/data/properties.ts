@@ -3,11 +3,12 @@ import "server-only";
 import { FieldValue, Timestamp } from "firebase-admin/firestore";
 
 import { getAdminDb } from "@/lib/firebase/admin";
-import { PROPERTY_TYPES } from "@/lib/property-labels";
+import { LISTING_TYPES, PROPERTY_TYPES } from "@/lib/property-labels";
 import type { Property, PropertyInput } from "@/types/property";
 
 const COLLECTION = "properties";
 const VALID_PROPERTY_TYPES = new Set(PROPERTY_TYPES.map((t) => t.value));
+const VALID_LISTING_TYPES = new Set(LISTING_TYPES.map((t) => t.value));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function toProperty(id: string, data: any): Property {
@@ -18,6 +19,7 @@ function toProperty(id: string, data: any): Property {
     id,
     title: data.title ?? "",
     propertyType: VALID_PROPERTY_TYPES.has(data.propertyType) ? data.propertyType : "house",
+    listingType: VALID_LISTING_TYPES.has(data.listingType) ? data.listingType : "sale",
     neighborhood: data.neighborhood ?? "",
     city: data.city ?? "",
     description: data.description ?? "",

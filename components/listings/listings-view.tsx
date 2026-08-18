@@ -6,6 +6,7 @@ import { Search } from "lucide-react";
 import type { Property } from "@/types/property";
 import {
   BEDROOM_OPTIONS,
+  LISTING_TYPES,
   parsePriceRange,
   PRICE_RANGES,
   PROPERTY_TYPES,
@@ -23,6 +24,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+const LISTING_TYPE_ITEMS: Record<string, string> = Object.fromEntries(
+  LISTING_TYPES.map((option) => [option.value, option.label])
+);
 const PROPERTY_TYPE_ITEMS: Record<string, string> = Object.fromEntries(
   PROPERTY_TYPES.map((option) => [option.value, option.label])
 );
@@ -31,6 +35,7 @@ const BEDROOM_ITEMS: Record<string, string> = Object.fromEntries(
 );
 
 export function ListingsView({ properties }: { properties: Property[] }) {
+  const [listingType, setListingType] = useState("");
   const [propertyType, setPropertyType] = useState("");
   const [bedrooms, setBedrooms] = useState("");
   const [neighborhood, setNeighborhood] = useState("");
@@ -38,6 +43,7 @@ export function ListingsView({ properties }: { properties: Property[] }) {
 
   const filtered = useMemo(() => {
     return properties.filter((property) => {
+      if (listingType && property.listingType !== listingType) return false;
       if (propertyType && property.propertyType !== propertyType) return false;
       if (bedrooms) {
         const min = Number(bedrooms);
@@ -56,16 +62,19 @@ export function ListingsView({ properties }: { properties: Property[] }) {
       }
       return true;
     });
-  }, [properties, propertyType, bedrooms, neighborhood, price]);
+  }, [properties, listingType, propertyType, bedrooms, neighborhood, price]);
 
   function clearFilters() {
+    setListingType("");
     setPropertyType("");
     setBedrooms("");
     setNeighborhood("");
     setPrice("");
   }
 
-  const hasActiveFilters = Boolean(propertyType || bedrooms || neighborhood || price);
+  const hasActiveFilters = Boolean(
+    listingType || propertyType || bedrooms || neighborhood || price
+  );
 
   return (
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-[260px_1fr]">
@@ -75,6 +84,26 @@ export function ListingsView({ properties }: { properties: Property[] }) {
             <CardTitle className="text-base">Filtros</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="filter-listing-type">Operación</Label>
+              <Select
+                items={LISTING_TYPE_ITEMS}
+                value={listingType}
+                onValueChange={(value) => setListingType(value ?? "")}
+              >
+                <SelectTrigger id="filter-listing-type" className="w-full">
+                  <SelectValue placeholder="Comprar o alquilar" />
+                </SelectTrigger>
+                <SelectContent>
+                  {LISTING_TYPES.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="filter-property-type">Tipo de propiedad</Label>
               <Select

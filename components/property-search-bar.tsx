@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
 
-import { BEDROOM_OPTIONS, PRICE_RANGES, PROPERTY_TYPES } from "@/lib/property-labels";
+import { BEDROOM_OPTIONS, LISTING_TYPES, PRICE_RANGES, PROPERTY_TYPES } from "@/lib/property-labels";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+const LISTING_TYPE_ITEMS: Record<string, string> = Object.fromEntries(
+  LISTING_TYPES.map((option) => [option.value, option.label])
+);
 const PROPERTY_TYPE_ITEMS: Record<string, string> = Object.fromEntries(
   PROPERTY_TYPES.map((option) => [option.value, option.label])
 );
@@ -25,6 +28,7 @@ const BEDROOM_ITEMS: Record<string, string> = Object.fromEntries(
 );
 
 export function PropertySearchBar() {
+  const [listingType, setListingType] = useState("");
   const [propertyType, setPropertyType] = useState("");
   const [bedrooms, setBedrooms] = useState("");
   const [neighborhood, setNeighborhood] = useState("");
@@ -32,6 +36,7 @@ export function PropertySearchBar() {
 
   function handleSearch() {
     const params = new URLSearchParams();
+    if (listingType) params.set("listingType", listingType);
     if (propertyType) params.set("propertyType", propertyType);
     if (bedrooms) params.set("bedrooms", bedrooms);
     if (neighborhood.trim()) params.set("neighborhood", neighborhood.trim());
@@ -55,8 +60,28 @@ export function PropertySearchBar() {
                 event.preventDefault();
                 handleSearch();
               }}
-              className="grid grid-cols-2 items-end gap-4 lg:grid-cols-[1fr_1fr_1fr_1fr_auto]"
+              className="grid grid-cols-2 items-end gap-4 lg:grid-cols-[1fr_1fr_1fr_1fr_1fr_auto]"
             >
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="search-listing-type">Operación</Label>
+                <Select
+                  items={LISTING_TYPE_ITEMS}
+                  value={listingType}
+                  onValueChange={(value) => value && setListingType(value)}
+                >
+                  <SelectTrigger id="search-listing-type" className="w-full">
+                    <SelectValue placeholder="Comprar o alquilar" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {LISTING_TYPES.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="search-property-type">Tipo de propiedad</Label>
                 <Select

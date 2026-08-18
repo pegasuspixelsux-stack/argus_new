@@ -2,6 +2,8 @@ export type PropertyStatus = "draft" | "published";
 
 export type PropertyType = "condo" | "house" | "single-family" | "land";
 
+export type ListingType = "sale" | "rent";
+
 export interface PropertyPhoto {
   url: string;
   path: string;
@@ -20,6 +22,7 @@ export interface Property {
   id: string;
   title: string;
   propertyType: PropertyType;
+  listingType: ListingType;
   neighborhood: string;
   city: string;
   description: string;

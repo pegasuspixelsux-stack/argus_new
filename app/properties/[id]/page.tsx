@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import { Bath, BedDouble, Home, Ruler, TriangleAlert } from "lucide-react";
+import { Bath, BedDouble, Home, Ruler, Tag, TriangleAlert } from "lucide-react";
 
 import { tryGetPublishedProperty } from "@/lib/data/properties";
-import { PROPERTY_TYPE_LABELS } from "@/lib/property-labels";
+import { LISTING_TYPE_LABELS, PROPERTY_TYPE_LABELS } from "@/lib/property-labels";
 import { PhotoGallery } from "@/components/property/photo-gallery";
 import { PriceDisplay } from "@/components/property/price-display";
 import { LeadForm } from "@/components/property/lead-form";
@@ -56,6 +56,7 @@ export default async function PublicPropertyPage({ params }: PageProps<"/propert
   const whatsappNumber = process.env.NEXT_PUBLIC_SALES_WHATSAPP_NUMBER;
 
   const specs = [
+    { icon: Tag, label: "Operación", value: LISTING_TYPE_LABELS[property.listingType] },
     { icon: Home, label: "Tipo", value: PROPERTY_TYPE_LABELS[property.propertyType] },
     {
       icon: BedDouble,
@@ -160,6 +161,7 @@ export default async function PublicPropertyPage({ params }: PageProps<"/propert
               <PriceDisplay
                 priceDisplay={property.priceDisplay}
                 priceCompareAt={property.priceCompareAt}
+                listingType={property.listingType}
               />
             </CardHeader>
             <CardContent className="flex flex-col gap-5">

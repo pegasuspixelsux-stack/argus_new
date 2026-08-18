@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Building2 } from "lucide-react";
 
 import type { Property } from "@/types/property";
-import { PROPERTY_TYPE_LABELS } from "@/lib/property-labels";
+import { LISTING_TYPE_LABELS, PROPERTY_TYPE_LABELS } from "@/lib/property-labels";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -74,7 +74,7 @@ export function PropertyCard({
           )}
         >
           <p className="text-xs font-medium uppercase tracking-wide text-primary">
-            {PROPERTY_TYPE_LABELS[property.propertyType]}
+            {LISTING_TYPE_LABELS[property.listingType]} · {PROPERTY_TYPE_LABELS[property.propertyType]}
           </p>
           <h3 className="truncate font-medium text-foreground">{property.title}</h3>
           <p className="text-sm text-muted-foreground">{summaryLine(property)}</p>
@@ -82,6 +82,9 @@ export function PropertyCard({
             {property.priceDisplay != null
               ? currency.format(property.priceDisplay)
               : "Precio a consultar"}
+            {property.priceDisplay != null && property.listingType === "rent" ? (
+              <span className="font-normal text-muted-foreground">/mes</span>
+            ) : null}
           </p>
         </CardContent>
       </Card>

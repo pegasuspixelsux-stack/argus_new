@@ -1,3 +1,5 @@
+import type { ListingType } from "@/types/property";
+
 const currency = new Intl.NumberFormat("es-UY", {
   style: "currency",
   currency: "USD",
@@ -7,9 +9,11 @@ const currency = new Intl.NumberFormat("es-UY", {
 export function PriceDisplay({
   priceDisplay,
   priceCompareAt,
+  listingType,
 }: {
   priceDisplay: number | null;
   priceCompareAt: number | null;
+  listingType: ListingType;
 }) {
   const showCompareAt =
     priceCompareAt != null && priceDisplay != null && priceCompareAt > priceDisplay;
@@ -19,6 +23,9 @@ export function PriceDisplay({
       <div className="flex flex-wrap items-baseline gap-2">
         <span className="text-4xl font-semibold tracking-tight text-foreground">
           {priceDisplay != null ? currency.format(priceDisplay) : "Precio a consultar"}
+          {priceDisplay != null && listingType === "rent" ? (
+            <span className="text-lg font-normal text-muted-foreground">/mes</span>
+          ) : null}
         </span>
         {showCompareAt ? (
           <span className="text-lg text-muted-foreground line-through">
