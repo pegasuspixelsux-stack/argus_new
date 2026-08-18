@@ -14,8 +14,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const TERMS = [36, 48, 60, 72, 84];
-const TERM_ITEMS = TERMS.map((months) => ({ value: String(months), label: `${months} meses` }));
+const TERMS_YEARS = [15, 20, 25, 30];
+const TERM_ITEMS = TERMS_YEARS.map((years) => ({ value: String(years), label: `${years} años` }));
 
 const currency = new Intl.NumberFormat("es-UY", {
   style: "currency",
@@ -39,14 +39,14 @@ function calculateMonthlyPayment(principal: number, aprPercent: number, termMont
 }
 
 export function FinancingCalculator() {
-  const [price, setPrice] = useState("28000");
-  const [downPayment, setDownPayment] = useState("3000");
-  const [apr, setApr] = useState("6.5");
-  const [term, setTerm] = useState("60");
+  const [price, setPrice] = useState("120000");
+  const [downPayment, setDownPayment] = useState("20000");
+  const [apr, setApr] = useState("8.5");
+  const [term, setTerm] = useState("30");
 
   const monthlyPayment = useMemo(() => {
     const principal = Math.max(0, toNumber(price) - toNumber(downPayment));
-    return calculateMonthlyPayment(principal, toNumber(apr), Number(term));
+    return calculateMonthlyPayment(principal, toNumber(apr), Number(term) * 12);
   }, [price, downPayment, apr, term]);
 
   return (
@@ -56,13 +56,13 @@ export function FinancingCalculator() {
           <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Calculator className="size-4.5" />
           </div>
-          <CardTitle className="text-lg">Calculadora de cuotas</CardTitle>
+          <CardTitle className="text-lg">Calculadora de crédito hipotecario</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="flex flex-col gap-2">
-            <Label htmlFor="calc-price">Precio del vehículo</Label>
+            <Label htmlFor="calc-price">Precio de la propiedad</Label>
             <div className="relative">
               <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-muted-foreground">
                 $
@@ -78,7 +78,7 @@ export function FinancingCalculator() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <Label htmlFor="calc-down">Anticipo</Label>
+            <Label htmlFor="calc-down">Cuota inicial</Label>
             <div className="relative">
               <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-muted-foreground">
                 $

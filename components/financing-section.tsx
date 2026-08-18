@@ -4,9 +4,9 @@ import { FinancingCalculator } from "@/components/financing-calculator";
 import { ScrollReveal } from "@/components/scroll-reveal";
 
 const POINTS = [
-  "Plazos flexibles de 36 a 84 meses",
+  "Plazos flexibles de 15 a 30 años",
   "Simular no afecta tu historial crediticio",
-  "Solicita financiación real cuando encuentres tu vehículo",
+  "Solicita financiación real cuando encuentres tu próxima propiedad",
 ];
 
 export function FinancingSection() {
@@ -22,9 +22,9 @@ export function FinancingSection() {
             Calcula cuánto te podría costar
           </h2>
           <p className="mt-4 text-balance text-muted-foreground">
-            Obtén una estimación rápida de tu cuota mensual antes de pisar el
-            lote. Ajusta el precio, el anticipo, la tasa y el plazo para
-            encontrar lo que se adapta a tu presupuesto.
+            Obtén una estimación rápida de tu cuota mensual antes de visitar
+            la propiedad. Ajusta el precio, la cuota inicial, la tasa y el
+            plazo para encontrar lo que se adapta a tu presupuesto.
           </p>
           <ul className="mt-6 flex flex-col gap-3">
             {POINTS.map((point) => (
