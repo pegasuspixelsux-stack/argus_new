@@ -77,9 +77,9 @@ export function AboutSection() {
             {TEAM.map((member) => (
               <div
                 key={member.name}
-                className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
+                className="flex flex-col items-center border border-border bg-card p-6 text-center shadow-sm"
               >
-                <div className="aspect-square w-full overflow-hidden bg-muted">
+                <div className="size-28 shrink-0 overflow-hidden rounded-full border border-border bg-muted">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={member.photo}
@@ -87,12 +87,12 @@ export function AboutSection() {
                     className="size-full object-cover"
                   />
                 </div>
-                <div className="flex flex-col gap-2 p-4">
+                <div className="mt-4 flex w-full flex-col gap-2">
                   <div>
                     <p className="font-medium text-foreground">{member.name}</p>
                     <p className="text-sm text-muted-foreground">{member.role}</p>
                   </div>
-                  <div className="flex flex-col gap-1 border-t border-border/60 pt-2">
+                  <div className="flex flex-col items-center gap-1 border-t border-border/60 pt-2">
                     <a
                       href={`mailto:${member.email}`}
                       className="flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-primary"
