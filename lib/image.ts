@@ -7,6 +7,33 @@ export function isImageFile(file: File): boolean {
   return file.type.startsWith("image/") || IMAGE_EXTENSION_PATTERN.test(file.name);
 }
 
+const EXTENSION_CONTENT_TYPES: Record<string, string> = {
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  jfif: "image/jpeg",
+  pjpeg: "image/jpeg",
+  png: "image/png",
+  webp: "image/webp",
+  gif: "image/gif",
+  avif: "image/avif",
+  heic: "image/heic",
+  heif: "image/heif",
+  bmp: "image/bmp",
+};
+
+/**
+ * The Content-Type to declare when uploading this file. Firebase Storage
+ * defaults to the File/Blob's own `.type`, but that's exactly the field
+ * that's empty or wrong for the browsers/files `isImageFile` already has to
+ * work around -- so callers should pass this explicitly as upload metadata
+ * rather than let the SDK fall back to `file.type` on its own.
+ */
+export function resolveContentType(file: File): string {
+  if (file.type.startsWith("image/")) return file.type;
+  const extension = file.name.split(".").pop()?.toLowerCase() ?? "";
+  return EXTENSION_CONTENT_TYPES[extension] ?? "image/jpeg";
+}
+
 /**
  * Downscales an image file in the browser before upload: shrinks anything
  * larger than `maxDimension` on its longest side and re-encodes as JPEG.

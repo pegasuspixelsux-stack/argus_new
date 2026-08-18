@@ -12,7 +12,7 @@ import { toast } from "sonner";
 
 import { getFirebaseStorage } from "@/lib/firebase/client";
 import { isFirebaseClientConfigured } from "@/lib/firebase/config";
-import { isImageFile, resizeImageFile } from "@/lib/image";
+import { isImageFile, resizeImageFile, resolveContentType } from "@/lib/image";
 import type { PropertyPhoto } from "@/types/property";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -80,7 +80,12 @@ export function PhotoUploader({ photos, onChange, storageFolder }: PhotoUploader
     const storage = getFirebaseStorage();
     const path = `${storageFolder}/${uploadId}-${upload.name}`;
     const storageRef = ref(storage, path);
-    const task = uploadBytesResumable(storageRef, upload);
+    // Declare the content type explicitly -- relying on `upload.type` here
+    // is exactly what let .jfif files reach Storage with an empty/wrong
+    // type and get bounced by the "contentType matches image/.*" rule.
+    const task = uploadBytesResumable(storageRef, upload, {
+      contentType: resolveContentType(upload),
+    });
 
     task.on(
       "state_changed",
