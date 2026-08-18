@@ -20,7 +20,11 @@ function summaryLine(property: Property): string {
   }
   const parts: string[] = [];
   if (property.details.bedrooms != null) parts.push(`${property.details.bedrooms} dorm.`);
-  if (property.details.bathrooms != null) parts.push(`${property.details.bathrooms} baños`);
+  if (property.details.bathrooms != null) {
+    parts.push(
+      `${property.details.bathrooms} baño${property.details.bathrooms === 1 ? "" : "s"}`
+    );
+  }
   if (property.details.areaM2 != null) {
     parts.push(`${property.details.areaM2.toLocaleString("es-UY")} m²`);
   }

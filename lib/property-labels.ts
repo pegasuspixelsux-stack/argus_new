@@ -15,10 +15,10 @@ export const PROPERTY_TYPES: { value: PropertyType; label: string }[] = [
 ];
 
 export const BEDROOM_OPTIONS = [
-  { value: "1", label: "1 dormitorio" },
-  { value: "2", label: "2 dormitorios" },
-  { value: "3", label: "3 dormitorios" },
-  { value: "4", label: "4 dormitorios" },
+  { value: "1", label: "1+ dormitorio" },
+  { value: "2", label: "2+ dormitorios" },
+  { value: "3", label: "3+ dormitorios" },
+  { value: "4", label: "4+ dormitorios" },
   { value: "5", label: "5+ dormitorios" },
 ];
 
