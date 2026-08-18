@@ -12,7 +12,7 @@ export async function updateSettingsAction(input: DealerSettings): Promise<Updat
   await requireSession();
 
   if (!input.dealerName.trim()) {
-    return { ok: false, error: "El nombre del concesionario es obligatorio." };
+    return { ok: false, error: "El nombre de la agencia es obligatorio." };
   }
 
   try {

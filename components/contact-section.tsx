@@ -22,7 +22,7 @@ export function ContactSection() {
             ¿Tienes dudas? Estamos para ayudarte
           </h2>
           <p className="mt-4 text-balance text-muted-foreground">
-            Ya sea que tengas preguntas sobre un vehículo, la financiación, o
+            Ya sea que tengas preguntas sobre una propiedad, la financiación, o
             simplemente quieras saludar, escríbenos por el medio que más te
             convenga.
           </p>

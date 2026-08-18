@@ -52,19 +52,19 @@ export function SettingsForm({ initialSettings }: { initialSettings: DealerSetti
 
       <Card>
         <CardHeader>
-          <CardTitle>Datos del concesionario</CardTitle>
+          <CardTitle>Datos de la agencia</CardTitle>
           <CardDescription>
             Esta información se usa como referencia interna del panel.
           </CardDescription>
         </CardHeader>
         <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="flex flex-col gap-2 sm:col-span-2">
-            <Label htmlFor="dealerName">Nombre del concesionario</Label>
+            <Label htmlFor="dealerName">Nombre de la agencia</Label>
             <Input
               id="dealerName"
               value={form.dealerName}
               onChange={(e) => update("dealerName", e.target.value)}
-              placeholder="Dealio"
+              placeholder="Argus"
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -74,7 +74,7 @@ export function SettingsForm({ initialSettings }: { initialSettings: DealerSetti
               type="email"
               value={form.contactEmail}
               onChange={(e) => update("contactEmail", e.target.value)}
-              placeholder="hello@dealio.app"
+              placeholder="hello@argus.app"
             />
           </div>
           <div className="flex flex-col gap-2">

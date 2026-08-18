@@ -101,7 +101,7 @@ export function LoginForm() {
           required
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          placeholder="you@dealio.app"
+          placeholder="you@argus.app"
         />
       </div>
 

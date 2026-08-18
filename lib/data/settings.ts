@@ -15,8 +15,8 @@ export interface DealerSettings {
 }
 
 const DEFAULT_SETTINGS: DealerSettings = {
-  dealerName: "Dealio",
-  contactEmail: "hello@dealio.app",
+  dealerName: "Argus",
+  contactEmail: "hello@argus.app",
   contactPhone: "+598 2900 1234",
   whatsappNumber: "",
   address: "Av. 18 de Julio 1200, Montevideo",
